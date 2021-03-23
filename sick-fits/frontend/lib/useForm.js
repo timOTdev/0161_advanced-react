@@ -13,7 +13,10 @@ export default function useForm(initial = {}) {
             value = parseInt(value);
         }
         if (type === 'file') {
-            value[0] = e.target.files;
+            // Need to destructure the value per ESLint.
+            // We are setting the image array to the variable.
+            // It has a bunch of info.
+            [value] = e.target.files;
         }
 
         setInputs({
