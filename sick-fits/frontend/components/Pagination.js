@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { perPage } from '../config';
+import DisplayError from "./DisplayError";
 
-const PAGINATION_QUERY = gql`
+export const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
     _allProductsMeta {
       count
