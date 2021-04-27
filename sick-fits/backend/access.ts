@@ -29,6 +29,11 @@ export const permissions = {
 // Rules can return a boolean - yes or no - or a filter which limits which products they can CRUD.
 export const rules = {
   canManageProducts({ session }: ListAccessArgs) {
+    // Gives us better error message instead of generic.
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+
     // Do they have permission of canManageProducts
     if (permissions.canManageProducts({ session })) {
       return true;
@@ -38,7 +43,42 @@ export const rules = {
     // We are returning a where filter we use in graphQL api.
     return { user: { id: session.itemId } };
   },
+  canOrder({ session }: ListAccessArgs) {
+    // Gives us better error message instead of generic.
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+
+    // Do they have permission of canManageProducts
+    if (permissions.canManageProducts({ session })) {
+      return true;
+    }
+
+    // If not, do they own this item?
+    // We are returning a where filter we use in graphQL api.
+    return { user: { id: session.itemId } };
+  },
+  canManageOrderItems({ session }: ListAccessArgs) {
+    // Gives us better error message instead of generic.
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+
+    // Do they have permission of canManageProducts
+    if (permissions.canManageProducts({ session })) {
+      return true;
+    }
+
+    // If not, do they own this item?
+    // We are returning a where filter we use in graphQL api.
+    return { order: { user: { id: session.itemId } } };
+  },
   canReadProducts({ session }: ListAccessArgs) {
+    // Gives us better error message instead of generic.
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+
     if (permissions.canManageProducts({ session })) {
       return true;
     }

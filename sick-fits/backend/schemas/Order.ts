@@ -7,8 +7,15 @@ import {
 } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
 import formatMoney from '../lib/formatMoney';
+import { isSignedIn, rules } from '../access';
 
 export const Order = list({
+  access: {
+    create: isSignedIn,
+    read: rules.canOrder,
+    update: () => false, // have to do arrow function
+    delete: () => false, // have to do arrow function
+  },
   fields: {
     label: virtual({
       graphQLReturnType: 'String',
