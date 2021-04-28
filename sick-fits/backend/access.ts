@@ -85,6 +85,19 @@ export const rules = {
 
     return { status: 'AVAILABLE' };
   },
+  canManageUsers({ session }: ListAccessArgs) {
+    // Gives us better error message instead of generic.
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+
+    if (permissions.canManageUsers({ session })) {
+      return true;
+    }
+
+    // Otherwise they can only update themselves.
+    return { id: session.itemId };
+  },
 };
 
 // We can use this but don't get intellisense and the top method is what we went with.
